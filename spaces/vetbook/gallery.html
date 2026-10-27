@@ -17,21 +17,16 @@
   --lav: #9b7bff; --mint: #5cc9a7; --card: #ffffff; --line: #f1d6e4; --field: #ffffff;
   --display: "Mochiy Pop One", "Zen Maru Gothic", system-ui, sans-serif;
   --body: "Zen Maru Gothic", system-ui, sans-serif;
-  /* The cards' four palettes (`traits.palette`), as a tile's cover and its title colour. */
-  --cover0: #ffe0ec; --title0: #e0558c; --cover1: #d4f3e6; --title1: #2f9a8a;
-  --cover2: #e6dcff; --title2: #7656dc; --cover3: #ffe2c8; --title3: #e5862a;
 }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #221a2e; --ink: #f4ecff; --soft: #b9a8d4; --card: #2e2440; --line: #44365a; --field: #2e2440; color-scheme: dark;
-    --cover0: #4a2a3d; --title0: #ff9cc2; --cover1: #1f3d36; --title1: #7fdcc0;
-    --cover2: #342a55; --title2: #c3b0ff; --cover3: #4a3322; --title3: #ffc08a; }
+  :root { --bg: #221a2e; --ink: #f4ecff; --soft: #b9a8d4; --card: #2e2440; --line: #44365a; --field: #2e2440; color-scheme: dark; }
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 500 17px/1.6 var(--body);
   background-image: radial-gradient(color-mix(in srgb, var(--pink) 18%, transparent) 2px, transparent 2.5px); background-size: 28px 28px; }
 main { max-width: 1180px; margin: 0 auto; padding-inline: 16px; padding-block: 36px 64px; display: grid; gap: 22px; }
 h1 { font: 400 clamp(28px, 5vw, 44px)/1.15 var(--display); margin: 0; text-wrap: balance; display: flex; align-items: center; gap: 14px; }
-h1 img { width: 64px; height: 64px; }
+h1 img { width: 72px; height: auto; flex: none; }
 h1 span { color: var(--pink); }
 .lede { margin: 6px 0 0; color: var(--soft); max-width: 70ch; }
 code { font-size: .95em; background: var(--card); padding: 1px 6px; border-radius: 6px; }
@@ -49,30 +44,27 @@ label.inline { display: inline-flex; gap: 8px; align-items: center; color: var(-
 .chip .n { opacity: .7; font-weight: 500; }
 .count { color: var(--soft); font-size: 15px; margin: 0; }
 
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; list-style: none; padding: 0; margin: 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 22px; list-style: none; padding: 0; margin: 0; }
 .duck { position: relative; background: var(--card); border-radius: 22px; overflow: hidden; display: grid;
   box-shadow: 0 10px 28px #b04a8a22, 0 0 0 4px var(--line); transition: transform .15s; }
 .duck:hover { transform: translateY(-3px); }
-.cover { background: var(--cover); padding: 16px 16px 10px; display: flex; gap: 12px; align-items: center; }
-.cover img { width: 58px; height: 58px; flex: none; }
-.duck h2 { font: 400 20px/1.2 var(--display); margin: 0; color: var(--title); overflow-wrap: anywhere; }
-/* The whole tile opens the duck's card; the owner's link sits above it. */
+.shot { display: block; width: 100%; height: auto; aspect-ratio: 1200 / 630; background: var(--line); }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 12px 16px 14px; }
+.who { display: grid; gap: 2px; margin-right: auto; min-width: 0; }
+.duck h2 { font: 400 20px/1.2 var(--display); margin: 0; overflow-wrap: anywhere; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+/* The whole tile opens the duck's page; the owner's link sits above it. */
 .duck h2 a { color: inherit; text-decoration: none; }
 .duck h2 a::after { content: ""; position: absolute; inset: 0; }
-.mood { display: inline-block; margin-top: 4px; font: 700 12px var(--body); color: #fff; background: var(--ink-mood); border-radius: 99px; padding: 1px 9px; }
-.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; padding: 12px 16px 4px; margin: 0; }
-.stats div { display: grid; }
-.stats dt { color: var(--soft); font-size: 12px; order: 2; }
-.stats dd { margin: 0; font: 400 18px/1.2 var(--display); }
-.stats dd.hl { color: var(--pink); }
-.badges { padding: 4px 16px 0; display: flex; gap: 6px; flex-wrap: wrap; min-height: 30px; }
-.badge { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 14px; background: var(--b); }
-.owner { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; padding: 10px 16px 14px; color: var(--soft);
+.mood { font: 700 12px var(--body); color: #fff; background: var(--ink-mood); border-radius: 99px; padding: 1px 9px; }
+.owner { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; color: var(--soft);
   font-size: 14px; text-decoration: none; justify-self: start; }
 .owner:hover { color: var(--pink); }
-.owner img, .owner .ph { width: 24px; height: 24px; border-radius: 50%; background: var(--line); flex: none; }
+.owner img, .owner .ph { width: 22px; height: 22px; border-radius: 50%; background: var(--line); flex: none; object-fit: cover; }
+.stat { text-align: right; display: grid; }
+.stat b { font: 400 20px/1.1 var(--display); color: var(--pink); }
+.stat span { color: var(--soft); font-size: 12px; }
 .empty { background: var(--card); border-radius: 22px; padding: 32px; text-align: center; box-shadow: 0 0 0 6px var(--line); }
-.empty img { width: min(220px, 60%); }
+.empty img { width: min(220px, 60%); height: auto; }
 footer { color: var(--soft); font-size: 14px; }
 footer a { color: inherit; }
 @media (prefers-reduced-motion: reduce) { .duck, .duck:hover { transition: none; transform: none; } }
@@ -139,7 +131,7 @@ footer a { color: inherit; }
   };
   const fmt = n => n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(Math.round(n));
 
-  // What the sort stat reads as on a tile, so the number being sorted on is always shown.
+  // The number being sorted on, under the card, so a sorted gallery says why it is in that order.
   const SHOWN = {
     distance_m: ["walked", d => d.walked], awake_h: ["awake", d => d.awake],
     cuddles: ["cuddles", d => fmt(d.stats.cuddles)], falls: ["oopsie falls", d => fmt(d.stats.falls)],
@@ -149,7 +141,6 @@ footer a { color: inherit; }
     photos: ["photos", d => fmt(d.stats.photos)], servos_replaced: ["new servos", d => fmt(d.stats.servos_replaced)],
     age_days: ["days old", d => fmt(d.stats.age_days)],
   };
-  const BASE = ["distance_m", "awake_h", "cuddles", "falls"];
 
   // Mood chips and the badge list, from what the ducks actually have.
   const tally = (pick) => { const m = new Map(); for (const d of DUCKS) for (const [k, v] of pick(d)) m.set(k, [v, (m.get(k)?.[1] || 0) + 1]); return m; };
@@ -178,30 +169,18 @@ footer a { color: inherit; }
   }
 
   function tile(d) {
-    const pal = `--cover:var(--cover${d.palette % 4});--title:var(--title${d.palette % 4})`;
-    const shown = BASE.includes(sort.value) || !SHOWN[sort.value] ? BASE : [sort.value, ...BASE.slice(0, 3)];
-    const stats = el("dl", { className: "stats" });
-    for (const key of shown) {
-      const [label, value] = SHOWN[key];
-      stats.append(el("div", {}, el("dt", { textContent: label }), el("dd", { textContent: value(d), className: key === sort.value ? "hl" : "" })));
-    }
-    const badges = el("div", { className: "badges" });
-    for (const b of d.badges.slice(0, 7)) {
-      const s = el("span", { className: "badge", textContent: b.glyph, title: b.name });
-      s.style.setProperty("--b", b.colour);
-      s.setAttribute("aria-label", b.name);
-      badges.append(s);
-    }
+    const page = `/d/${encodeURIComponent(d.user)}/${encodeURIComponent(d.duck)}`;
     const mood = el("span", { className: "mood", textContent: d.mood_title });
     mood.style.setProperty("--ink-mood", d.mood_ink);
     const owner = el("a", { className: "owner", href: `https://huggingface.co/${encodeURIComponent(d.owner)}`, target: "_blank", rel: "noopener" },
       d.avatar ? el("img", { src: d.avatar, alt: "", loading: "lazy" }) : el("span", { className: "ph" }), "@" + d.owner);
-    const li = el("li", { className: "duck" },
-      el("div", { className: "cover" }, el("img", { src: "/sticker.webp", alt: "" }),
-        el("div", {}, el("h2", {}, el("a", { href: `/d/${encodeURIComponent(d.user)}/${encodeURIComponent(d.duck)}`, textContent: d.robot })), mood)),
-      stats, badges, owner);
-    li.setAttribute("style", pal);
-    return li;
+    const shown = SHOWN[sort.value];
+    const stat = shown && el("div", { className: "stat" }, el("b", { textContent: shown[1](d) }), el("span", { textContent: shown[0] }));
+    return el("li", { className: "duck" },
+      el("img", { className: "shot", src: d.image, alt: `${d.robot}'s vet book card`, width: 1200, height: 630, loading: "lazy", decoding: "async" }),
+      el("div", { className: "meta" },
+        el("div", { className: "who" }, el("h2", {}, el("a", { href: page, textContent: d.robot }), mood), owner),
+        stat));
   }
 
   function draw() {
