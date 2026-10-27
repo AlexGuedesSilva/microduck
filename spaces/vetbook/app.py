@@ -61,7 +61,7 @@ pngs: OrderedDict[tuple, bytes] = OrderedDict()
 render_lock = asyncio.Semaphore(2)
 # The gallery: rows by repo, each with the commit it was read at, so a refresh downloads only the
 # books shared again since. `avatars` is the owners' Hugging Face pictures, by user.
-directory: dict = {"rows": {}, "at": 0.0, "task": None}
+directory: dict = {"rows": {}, "at": 0.0, "task": None, "warm": None}
 avatars: dict[str, str | None] = {}
 
 
@@ -278,8 +278,21 @@ async def refresh_directory() -> None:
             rows[repo] = (sha, row)
 
     await asyncio.gather(*(one(repo, sha) for repo, sha in repos))
+    fresh = [row for repo, (sha, row) in rows.items() if old.get(repo, (None,))[0] != sha]
     directory["rows"] = rows
     directory["at"] = time.monotonic()
+    # The gallery shows every card at once, and a card is a second of Chromium, so draw the new
+    # ones now, behind the list rather than in front of it, instead of when a visitor's page asks
+    # for all of them together.
+    directory["warm"] = asyncio.create_task(warm(fresh))
+
+
+async def warm(rows: list[dict]) -> None:
+    for row in rows:
+        try:
+            await cached_png(row["user"], row["duck"], None, None, story=False, versioned=True)
+        except Exception as e:  # noqa: BLE001 — the visitor's request will try again
+            print(f"gallery: {row['user']}/{row['duck']}: card not drawn: {e}")
 
 
 async def ducks() -> list[dict]:

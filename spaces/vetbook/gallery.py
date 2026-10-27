@@ -41,7 +41,6 @@ def entry(book: dict, user: str, duck: str) -> dict | None:
         "robot": c.robot,
         # The dataset's namespace, not `share.owner`: it is the account that wrote the book.
         "owner": user,
-        "palette": c.palette,
         "mood": c.status.key,
         "mood_title": c.status.title,
         "mood_ink": c.status.ink,
@@ -49,6 +48,9 @@ def entry(book: dict, user: str, duck: str) -> dict | None:
         # Every badge, rarest first: the tiles show a few, the filter wants them all.
         "badges": [{"key": b.key, "glyph": b.glyph, "name": b.name, "colour": b.colour} for b in c.badges],
         "shared_at": int(cards._num(share.get("shared_at"))),
+        # The card this share drew, at its own versioned address, so a browser keeps it until the
+        # duck is shared again.
+        "image": f"/d/{user}/{duck}/card.png?v={int(cards._num(share.get('shared_at')))}",
         "day": c.day,
         "walked": f"{c.walked} {c.walked_unit}",
         "awake": c.awake,
